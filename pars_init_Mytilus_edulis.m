@@ -16,8 +16,9 @@ par.kap = 0.99649;    free.kap   = 1;   units.kap = '-';          label.kap = 'a
 par.kap_R = 0.95;     free.kap_R = 0;   units.kap_R = '-';        label.kap_R = 'reproduction efficiency'; 
 par.p_M = 2.6463;     free.p_M   = 1;   units.p_M = 'J/d.cm^3';   label.p_M = '[p_M], vol-spec somatic maint'; 
 par.p_T = 0;          free.p_T   = 0;   units.p_T = 'J/d.cm^2';   label.p_T = '{p_T}, surf-spec somatic maint'; 
-par.k_J = 0.00019059;  free.k_J   = 1;   units.k_J = '1/d';        label.k_J = 'maturity maint rate coefficient'; 
+par.k_J = 0.00019059; free.k_J   = 1;   units.k_J = '1/d';        label.k_J = 'maturity maint rate coefficient'; 
 par.E_G = 2348;       free.E_G   = 0;   units.E_G = 'J/cm^3';     label.E_G = '[E_G], spec cost for structure'; 
+par.E_Hh = 2e-07;     free.E_Hb  = 1;   units.E_Hb = 'J';         label.E_Hb = 'maturity at hatching'; 
 par.E_Hb = 2.317e-07; free.E_Hb  = 1;   units.E_Hb = 'J';         label.E_Hb = 'maturity at birth'; 
 par.E_Hj = 3.642e-07; free.E_Hj  = 1;   units.E_Hj = 'J';         label.E_Hj = 'maturity at metam'; 
 par.E_Hp = 5.578e-01; free.E_Hp  = 1;   units.E_Hp = 'J';         label.E_Hp = 'maturity at puberty'; 
@@ -31,6 +32,7 @@ par.T_AL = 45430;     free.T_AL  = 0;   units.T_AL = 'K';         label.T_AL = '
 par.T_H = 296;        free.T_H   = 0;   units.T_H = 'K';          label.T_H = 'upper boundary'; 
 par.T_L = 275;        free.T_L   = 0;   units.T_L = 'K';          label.T_L = 'lower boundary'; 
 par.del_M = 0.34144;  free.del_M = 1;   units.del_M = '-';        label.del_M = 'shape coefficient after metam'; 
+% par.del_Mh = 0.77387;  free.del_Mb = 1;   units.del_Mb = '-';       label.del_Mb = 'shape coefficient at hatching (see Perna Viridis)'; 
 par.f = 1;            free.f     = 0;   units.f = '-';            label.f = 'scaled functional response for 0-var data'; 
 par.f_0 = 0.69412;    free.f_0   = 1;   units.f_0 = '-';          label.f_0 = 'initial scaled functional response for tdL data'; 
 par.f_tL = 1;         free.f_tL  = 0;   units.f_tL = '-';         label.f_tL = 'scaled functional response for tL data'; 

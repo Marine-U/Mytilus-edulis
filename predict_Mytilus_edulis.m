@@ -7,6 +7,10 @@ function [prdData, info] = predict_Mytilus_edulis(par, data, auxData)
   if F_m < 0
     prdData = []; info = 0; return
   end
+  
+   if E_Hh > E_Hb
+    prdData = []; info = 0; return
+  end
 
   % compute temperature correction factors
   pars_T = [T_A; T_L; T_H; T_AL; T_AH];
@@ -51,21 +55,23 @@ function [prdData, info] = predict_Mytilus_edulis(par, data, auxData)
 
   % life cycle
   pars_tj = [g k l_T v_Hb v_Hj v_Hp];
-  [t_j, t_p, t_b, t_h, l_j, l_p, l_b, l_h, l_i, rho_j, rho_B, info] = get_tj(pars_tj, f);
+  [t_j, t_p, t_b, l_j, l_p, l_b, l_i, rho_j, rho_B, info] = get_tj(pars_tj, f);
     
   % hatching (trochophora stage)  
-  [~, aUL] = ode45(@dget_aul, [0; U_Hh; U_Hb], [0 U_E0 1e-10], [], kap, v, k_J, g, L_m);
+  [U_H aUL] = ode45(@dget_aul, [0; U_Hh; U_Hb], [0 U_E0 1e-10], [], kap, v, k_J, g, L_m);
+
   a_h = aUL(2,1);                  % d, age at hatch at f and T
   aT_h = a_h/ TC_ah;
-  Lw_h = L_h/ del_Me;              % cm, physical length at trochophore larva at f
+  Lw_h = L_h/ del_Mh;              % cm, physical length at trochophore larva at f
   Ww_h = L_h^3 * (1 + f * ome);    % g, wet weight at hatch   
-  %Wd_h =                            % g, dry weight at birth
+  Wd_h = L_h^3 * d_V * (1 + f * ome); % g,  dry weight at birth at f (remove d_V for wet weight)
+
 
   % birth
   L_b = L_m * l_b;                  % cm, structural length at birth at f
   Lw_b = L_b/ del_M;                % cm, total length at birth at f
   Ww_b = L_b^3 *(1 + f * w);        % g, wet weight at birth
- %Wd_b =                            % g, dry weught at birth
+  Wd_b = L_b^3 * d_V * (1 + f * w); % g,  dry weight at birth at f (remove d_V for wet weight)
   aT_b = t_b/ k_M/ TC_ab;           % d, age at birth at f and T
   
   % metam
@@ -299,7 +305,7 @@ function [prdData, info] = predict_Mytilus_edulis(par, data, auxData)
    % température = 17°C (TL_4)
   [t_j, t_p, t_b, l_j, l_p, l_b, l_i, rho_j, rho_B] = get_tj(pars_tj, f_tL);
   kT_M = k_M * TC_tL; rT_B = rho_B * kT_M; L_j = L_m * l_j; L_i = L_m * l_i; tT_j = (t_j - t_b)/ kT_M;
-  ELw_t17_1 = (L_i - (L_i - L_j) * exp( - rT_B * (TL_4(:,1) - tT_j)))/ del_M; % cm, shell height  
+  ELw_t17_1 = (L_i - (L_i - L_j) * exp( - rT_B * (TL_4(:,1) - tT_j)))/ del_Mh; % cm, shell height  
 
 % after birth
    % température = 17°C (TL_5)
@@ -351,7 +357,7 @@ function [prdData, info] = predict_Mytilus_edulis(par, data, auxData)
 
   % length - dry weight (LDW)
   
-  EWd = ((LDW (:,1) .* del_Mb).^3 * (1 + f_Chap * ome))*d_V; % g, dry weight
+  EWd = ((LDW (:,1) .* del_M).^3 * (1 + f_Chap * ome))*d_V; % g, dry weight
 
 
 % Reproduction
